@@ -1,0 +1,4 @@
+﻿TO: vendas@test.com
+SUBJECT: Lead 1 aceito
+
+Lead 1 (Ana Silva) aceito. Preço final: 585,00

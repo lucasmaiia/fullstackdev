@@ -1,0 +1,4 @@
+﻿TO: vendas@test.com
+SUBJECT: Lead 2 aceito
+
+Lead 2 (Bruno Souza) aceito. Preço final: 300,00

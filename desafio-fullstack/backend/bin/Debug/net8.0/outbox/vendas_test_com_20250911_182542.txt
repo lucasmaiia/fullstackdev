@@ -1,0 +1,4 @@
+﻿TO: vendas@test.com
+SUBJECT: Lead 57 aceito
+
+Lead 57 (Ana Souza) aceito. Preço final: 585,00
