@@ -1,0 +1,12 @@
+/* ===== Design Tokens (Theme) ===== */
+:root {
+  --bg: #f6f6f6;
+  --card-bg: #fff;
+  --border: #e6e6e6;
+  --text: #222;
+  --muted: #6b7280;
+  --accent: #f57c00;
+  --accent-600: #e06f00;
+  --shadow: 0 1px 3px rgba(0,0,0,.08);
+  --radius: 10px;
+}

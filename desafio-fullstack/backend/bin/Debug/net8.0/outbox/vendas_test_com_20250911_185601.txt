@@ -1,0 +1,4 @@
+﻿TO: vendas@test.com
+SUBJECT: Lead 58 aceito
+
+Lead 58 (Bruno Almeida) aceito. Preço final: 300,00

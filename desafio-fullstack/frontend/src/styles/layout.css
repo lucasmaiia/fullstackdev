@@ -1,0 +1,13 @@
+/* ===== Layout ===== */
+.container {
+    width: min(100%, 960px);
+    max-width: 960px;
+    margin: 40px auto;
+    padding: 0 16px;
+
+}
+
+.title {
+  text-align: center;
+  margin-top: 0;
+}

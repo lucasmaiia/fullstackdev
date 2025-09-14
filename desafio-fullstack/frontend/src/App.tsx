@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { fetchLeads, acceptLead, declineLead } from './api';
-import type { Lead, LeadStatus } from './types';
-import { LeadCard } from './LeadCard';
-import './App.css';
+import { fetchLeads, acceptLead, declineLead } from './api/api';
+import type { Lead, LeadStatus } from './types/types';
+import { LeadCard } from './components/LeadCard';
+import './styles/main.css';
 
 interface TabButtonProps {
   active: boolean;
@@ -38,7 +38,7 @@ export default function App() {
 
   return (
     <div className="container">
-      <h1 style={{ marginTop: 0 }}>Lead Manager Full Stack</h1>
+      <h1 className='title'>Lead Manager Full Stack</h1>
 
       <div className="tabs">
         <TabButton active={tab === 'New'} onClick={() => setTab('New')}>Invited</TabButton>
@@ -53,9 +53,6 @@ export default function App() {
         <LeadCard key={lead.id} lead={lead} onAccept={onAccept} onDecline={onDecline} tab={tab} />
       ))}
 
-      <p className="small-muted" style={{ marginTop: 16 }}>
-        * Aceitar aplica 10% de desconto se o preço for &gt; $500 e registra um “e-mail” na pasta <code>backend/outbox</code>.
-      </p>
     </div>
   );
 }

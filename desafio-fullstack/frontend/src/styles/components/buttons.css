@@ -1,0 +1,25 @@
+/* ===== Buttons ===== */
+.btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: var(--accent-600);
+  border-color: var(--accent-600);
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+  color: #111;
+}
+.btn-secondary:hover { background: #e5e7eb; }

@@ -122,3 +122,19 @@ body{ margin:0; background: var(--bg); color: var(--text); font-family: ui-sans-
   background: #f3f4f6; border-color: #d1d5db; color: #111;
 }
 .btn-secondary:hover{ background: #e5e7eb; }
+
+.contact-row{
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin: 6px 0 8px;
+}
+.contact-link{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: none;
+}
+.contact-link:hover{ text-decoration: underline; }

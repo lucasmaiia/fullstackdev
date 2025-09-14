@@ -1,6 +1,5 @@
-import type { Lead, LeadStatus } from './types';
+import type { Lead, LeadStatus } from '../types/types';
 
-/* ===== Ícones (SVGs simples) ===== */
 function IconLocation() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -40,7 +39,6 @@ function IconMail() {
   );
 }
 
-/* ===== Card ===== */
 export function LeadCard({
   lead,
   onAccept,
@@ -61,7 +59,6 @@ export function LeadCard({
       <div className="card-header">
         <div className="avatar">{initial}</div>
         <div>
-          {/* Em Accepted mostra nome completo; em Invited mostra só firstName (como no mock) */}
           <div className="name">
             {tab === 'Accepted' ? (fullName || lead.firstName) : lead.firstName}
           </div>
@@ -71,7 +68,6 @@ export function LeadCard({
         </div>
       </div>
 
-      {/* Linha com localização / categoria / Job ID */}
       <div className="row">
         <span className="chip"><IconLocation /> {lead.suburb}</span>
         <span className="chip"><IconBriefcase /> {lead.category}</span>
@@ -94,10 +90,8 @@ export function LeadCard({
         </div>
       )}
 
-      {/* Descrição */}
       <div className="desc">{lead.description}</div>
 
-      {/* Rodapé: botões (somente em New) + preço */}
       <div className="footer">
         {lead.status === 'New' ? (
           <div style={{ display: 'flex', gap: 8 }}>

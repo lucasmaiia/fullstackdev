@@ -103,7 +103,6 @@ public class LeadsController(AppDbContext db, IEmailFake email) : ControllerBase
     [HttpPost("seed/preset")]
 public async Task<IActionResult> SeedPreset([FromQuery] bool clear = false)
 {
-    // Opcional: limpar leads "New" antes de inserir os presets
     if (clear)
     {
         var news = await db.Leads.Where(l => l.Status == LeadStatus.New).ToListAsync();

@@ -1,47 +1,38 @@
-# Lead Manager — SPA + .NET 8 Web API + SQL Server
+# Lead Manager Full Stack
 
-Aplicação full-stack para **gerenciamento de leads** com:
-- **Frontend**: React + Vite (TypeScript), SPA com abas **Invited** (New) e **Accepted**
-- **Backend**: .NET 8 Web API + **EF Core** (SQL Server)
-- **Banco**: SQL Server (via **Docker** ou instalação local)
-- **E-mail fake**: grava um `.txt` em `backend/outbox` ao aceitar um lead
+Aplicação full-stack para gerenciar **leads**, composta por:
+
+- **Backend**: ASP.NET Core  + Entity Framework Core + SQL Server  
+- **Frontend**: React + Vite + TypeScript  
+- **DB**: SQL Server (recomendado via Docker)
 
 ---
 
 ## Sumário
-- [Pré-requisitos](#pré-requisitos)
-- [Arquitetura & Funcionalidades](#arquitetura--funcionalidades)
-- [Estrutura do Projeto](#estrutura-do-projeto)
-- [Setup Rápido (TL;DR)](#setup-rápido-tldr)
-- [Backend — .NET API](#backend--net-api)
-  - [Configurar conexão com o SQL](#configurar-conexão-com-o-sql)
-  - [Rodar migrações e API](#rodar-migrações-e-api)
-  - [Endpoints](#endpoints)
-- [Frontend — React + Vite](#frontend--react--vite)
-- [Testes rápidos](#testes-rápidos)
-- [Dicas & Solução de Problemas](#dicas--solução-de-problemas)
+
+1. [Requisitos](#requisitos)  
+2. [Estrutura do Projeto](#estrutura-do-projeto)  
+3. [Configuração do Banco (Docker)](#configuração-do-banco-docker)  
+4. [Backend (.NET)](#backend-net)  
+5. [Frontend (React + Vite)](#frontend-react--vite)  
+6. [Rodando front e back juntos (opcional)](#rodando-front-e-back-juntos-opcional)  
+7. [Endpoints principais](#endpoints-principais)  
+8. [Seed automático e desconto](#seed-automático-e-desconto)  
+9. [Estilos (CSS) — convenções](#estilos-css--convenções)  
+10. [Dicas de troubleshooting](#dicas-de-troubleshooting)
 
 ---
 
-## Pré-requisitos
+## Requisitos
 
-- **.NET SDK 8**: <https://dotnet.microsoft.com/download>
-- **Node.js LTS + npm**: <https://nodejs.org/>
-- **SQL Server** de uma das formas:
-  - **(Recomendado)** **Docker Desktop**: <https://www.docker.com/products/docker-desktop/>
-  - ou **SQL Server Express/Developer** instalado localmente
+- **Node.js** 18+ e **npm** 9+  
+- **.NET SDK** 8.0+
+- **Docker Desktop** (para subir o SQL Server rapidamente)
 
-> **Windows (WSL2)**: se usar Docker, ative **WSL2** e, no Docker Desktop, habilite “Use the WSL 2 based engine” e a integração com sua distro.
-
----
-
-## Arquitetura & Funcionalidades
-
-- Aba **Invited** lista leads com `status = New` e mostra botões **Accept** / **Decline**.
-  - **Accept**: se `price > 500`, aplica **10% de desconto**, muda `status` para **Accepted** e grava um “e-mail” fake em `backend/outbox/…txt`.
-  - **Decline**: muda `status` para **Declined`.
-- Aba **Accepted** lista leads aceitos e exibe campos extras: **nome completo**, **telefone**, **email**.
-- API serializa o enum de status como **string**: `"New" | "Accepted" | "Declined"`.
+> ⚠️ No Windows PowerShell, habilite scripts do npm se necessário:
+> ```powershell
+> Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+> ```
 
 ---
 
@@ -49,182 +40,170 @@ Aplicação full-stack para **gerenciamento de leads** com:
 
 ```
 desafio-fullstack/
-├─ backend/                 # .NET 8 Web API + EF Core
+├─ backend/                         # API .NET 8
 │  ├─ Controllers/
 │  │  └─ LeadsController.cs
 │  ├─ Data/
 │  │  ├─ AppDbContext.cs
-│  │  └─ (Migrations…)
+│  │  └─ SeedHelpers.cs
+│  ├─ Migrations/
 │  ├─ Models/
 │  │  └─ Lead.cs
 │  ├─ Services/
-│  │  ├─ IEmailFake.cs
-│  │  └─ FileEmailFake.cs   # cria .txt em backend/outbox ao aceitar lead
+│  │  └─ FileEmailFake.cs           # “envio de email” fake (gera arquivo em backend/outbox)
 │  ├─ appsettings.json
-│  └─ Program.cs
-└─ frontend/                # React + Vite (TypeScript)
-   ├─ src/
-   │  ├─ App.tsx
-   │  ├─ App.css
-   │  ├─ LeadCard.tsx
-   │  ├─ api.ts
-   │  └─ types.ts
-   ├─ index.html
-   └─ vite.config.ts
+│  ├─ Program.cs
+│  └─ LeadsApi.csproj
+│
+├─ frontend/                        # React + Vite + TS
+│  ├─ src/
+│  │  ├─ api/
+│  │  │  └─ api.ts                  # Base URL da API
+│  │  ├─ components/
+│  │  │  ├─ LeadCard.tsx
+│  │  │  └─ (outros componentes)
+│  │  ├─ styles/                    # CSS modularizado
+│  │  │  ├─ tokens.css              # variáveis de tema
+│  │  │  ├─ base.css                # resets / estilos globais
+│  │  │  ├─ layout.css              # containers, grid, alinhamentos
+│  │  │  ├─ utilities.css           # utilitárias (helpers)
+│  │  │  ├─ tabs.css                # estilos das abas
+│  │  │  ├─ card.css                # estilos de cards
+│  │  │  ├─ buttons.css             # estilos de botões
+│  │  │  └─ main.css                # arquivo agregador 
+│  │  ├─ types/
+│  │  │  └─ types.ts
+│  │  ├─ App.tsx
+│  │  ├─ main.tsx
+│  │  └─ index.css                  
+│  ├─ index.html
+│  ├─ package.json
+│  └─ vite.config.ts
+│
+└─ README.md                        # este arquivo
 ```
 
 ---
 
-## Setup Rápido (TL;DR)
+## Configuração do Banco (Docker)
 
-1) **Subir SQL Server (Docker):**
-```powershell
-docker run --name mssql2022 -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Your_password123" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2022-latest
+Suba um SQL Server local em Docker:
+
+```bash
+docker run -e "ACCEPT_EULA=Y"   -e "MSSQL_SA_PASSWORD=YourStrong!Passw0rd"   -p 1433:1433 --name mssql2022 -d mcr.microsoft.com/mssql/server:2022-latest
 ```
 
-2) **Backend:**
-```powershell
-cd backend
-# ajuste appsettings.json conforme abaixo
-dotnet ef database update
-dotnet run --urls http://localhost:5080
-# Swagger em: http://localhost:5080/swagger
+Verifique os logs (opcional):
+
+```bash
+docker logs -f mssql2022    # aguarde "SQL Server is now ready for client connections"
 ```
 
-3) **Frontend:**
+Teste a porta:
+
 ```powershell
-cd ../frontend
-npm install
-npm run dev
-# Vite em: http://localhost:5173
+Test-NetConnection -ComputerName localhost -Port 1433
+# TcpTestSucceeded : True
 ```
 
 ---
 
-## Backend — .NET API
+## Backend (.NET)
 
-### Configurar conexão com o SQL
+1) **Configure a conexão** em `backend/appsettings.json`:
 
-**Opção A — Docker (recomendada):** em `backend/appsettings.json`:
 ```json
 {
   "ConnectionStrings": {
-    "Default": "Server=localhost,1433;Database=LeadsDb;User Id=sa;Password=Your_password123;TrustServerCertificate=True;"
-  },
-  "Logging": {
-    "LogLevel": { "Default": "Information", "Microsoft.AspNetCore": "Warning" }
-  },
-  "AllowedHosts": "*"
+    "Default": "Server=localhost,1433;Database=LeadsDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=true"
+  }
 }
 ```
 
-> Para porta externa diferente, mapeie `-p 1434:1433` e use `Server=localhost,1434`.
+2) **Restaurar & Rodar**:
 
-**Opção B — SQL Express local:**
-```json
-"Default": "Server=.\SQLEXPRESS;Database=LeadsDb;Trusted_Connection=True;TrustServerCertificate=True;"
-```
-
-**Program.cs — JSON de enums como string e CORS:**
-```csharp
-builder.Services.AddControllers()
-  .AddJsonOptions(o =>
-  {
-    o.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-    o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-  });
-
-builder.Services.AddCors(opt =>
-{
-  opt.AddPolicy("Spa", p =>
-    p.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod());
-});
-```
-
-### Rodar migrações e API
-```powershell
+```bash
 cd backend
-dotnet tool install --global dotnet-ef  # se ainda não tiver
-dotnet ef database update               # cria o banco + seed inicial
-dotnet run --urls http://localhost:5080
+dotnet restore
+dotnet build
+dotnet watch run --urls http://localhost:5080
 ```
 
-**Swagger:** <http://localhost:5080/swagger>
+- Swagger: `http://localhost:5080/swagger`
+- A API, ao iniciar, **cria o banco (EnsureCreated)** e **povoa 30 leads novos** (seed) se o banco estiver vazio (veja seção [Seed automático](#seed-automático-e-desconto)).
 
-### Endpoints
-- `GET /api/leads?status=New` — lista “Invited”  
-- `GET /api/leads?status=Accepted` — lista “Accepted”  
-- `POST /api/leads/{id}/accept` — aceita (aplica 10% se `price > 500`) e cria outbox `.txt`  
-- `POST /api/leads/{id}/decline` — recusa
+> Se preferir migrations: `dotnet ef database update` (já existem migrações na pasta *Migrations*).
 
 ---
 
-## Frontend — React + Vite
+## Frontend (React + Vite)
 
-```powershell
+1) Ajuste a **base URL da API** se necessário em `frontend/src/api/api.ts`:
+```ts
+export const API_BASE = 'http://localhost:5080/api';
+```
+
+2) Instale e rode:
+```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-Abra <http://localhost:5173>.
-
-- Abas **Invited**/**Accepted**.
-- Ao **Accept/Decline**, a lista **Invited** é recarregada automaticamente.
+- Vite em: `http://localhost:5173`
 
 ---
 
-## Testes rápidos
 
-**Checar leads New (Invited):**
-```
-GET http://localhost:5080/api/leads?status=New
-```
+## Endpoints principais
 
-**Aceitar o lead 1 (aplica 10% se > 500 e cria .txt em backend/outbox):**
-```
-POST http://localhost:5080/api/leads/1/accept
-```
-
-**Recusar o lead 2:**
-```
-POST http://localhost:5080/api/leads/2/decline
-```
-
-**Ver Accepted:**
-```
-GET http://localhost:5080/api/leads?status=Accepted
-```
+- `GET /api/leads?status=New|Accepted|Declined` – lista leads por status  
+- `POST /api/leads/seed?count=50` – cria *N* leads aleatórios (opcional; a aplicação já povoa sozinha se vazio)
+- `POST /api/leads/{id}/accept` – aceita lead; se `price > 500`, aplica **10% de desconto**  
+  Também grava um “email fake” em `backend/outbox/`
+- `POST /api/leads/{id}/decline` – recusa lead
 
 ---
 
-## Dicas & Solução de Problemas
+## Seed automático e desconto
 
-- **Docker não reconhecido**: instale Docker Desktop, reinicie, e verifique `docker version`.  
-- **Erro 500 / _ping no Docker**: habilite WSL2, integre o Docker com sua distro (Docker Desktop → Settings → Resources → WSL integration).  
-- **LocalDB não encontrado**: use Docker (acima) ou instale SQL Express/Developer.  
-- **Porta ocupada**: mapeie outra porta `-p 1434:1433` e ajuste a connection string.  
-- **Enum vindo como número (`0/1/2`)**: garanta `JsonStringEnumConverter` no `Program.cs`.  
-- **CORS**: confira a policy permitindo `http://localhost:5173`.  
-- **Build travado no Windows (arquivo em uso)**:
+- No **startup do backend** (em `Program.cs` + `SeedHelpers.cs`), se o banco estiver **sem registros**, são criados **30 leads** com dados completos (nome, telefone, email, bairro, categoria, descrição, preço, data).  
+- Ao **aceitar** um lead:
+  - Se `price > 500`, aplica-se **10% de desconto** (arredondado com 2 casas).
+  - É gerado um arquivo `.txt` em `backend/outbox/` simulando o envio de e-mail.
+
+---
+
+## Estilos (CSS) — convenções
+
+- CSS modularizado em `frontend/src/styles/`
+  - `tokens.css`: variáveis de cor, espaçamento, radius etc.  
+  - `base.css`: reset/normalização + estilos globais do `<body/>`.  
+  - `layout.css`: `.container`, alinhamento central e responsivo.  
+  - `utilities.css`: helpers (ex.: `.text-center`, `.mt-2`).  
+  - `tabs.css`, `card.css`, `buttons.css`: camadas por componente/feature.  
+  - `main.css`: **agregador** que importa todos os demais.
+- `index.css` importa `styles/main.css` – o React só vê **um** arquivo global.
+
+**Container centralizado**: o wrapper `.container` está com largura fixa centrada, e os cards têm largura máxima para manter a leitura confortável em telas grandes (sem “colar” à esquerda).
+
+---
+
+## Dicas de troubleshooting
+
+- **Porta 5080 ocupada**  
   ```powershell
-  taskkill /IM LeadsApi.exe /F
-  taskkill /IM dotnet.exe /F
-  dotnet build-server shutdown
-  dotnet clean
+  netstat -ano | findstr :5080
+  taskkill /PID <PID> /F
   ```
-- **Resetar base e dados de seed**:
-  ```powershell
-  dotnet ef database drop -f
-  dotnet ef database update
-  ```
+- **“Conexão recusada” no SQL**  
+  - Confirme o container: `docker ps`  
+  - Veja logs: `docker logs -f mssql2022`  
+  - Teste porta: `Test-NetConnection -ComputerName localhost -Port 1433` deve retornar `TcpTestSucceeded : True`  
+  - Verifique `appsettings.json` (senha, porta, `TrustServerCertificate=true`).
+- **Frontend não carrega**  
+  - Garanta que a API está em `http://localhost:5080`.  
+  - Confira `frontend/src/api/api.ts`.  
+  - Rode `npm run dev` dentro de `frontend/`.
 
 ---
-
-### Segurança (desenvolvimento vs produção)
-
-- **Dev local**: ok usar a senha `Your_password123` no `appsettings.json`.  
-- **Produção**:
-  - Use senha forte e **variáveis de ambiente**/secret manager.
-  - Não exponha o SQL Server publicamente.
-  - Considere migrations com pipeline e backups.
