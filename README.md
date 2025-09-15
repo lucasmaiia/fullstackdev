@@ -219,6 +219,35 @@ O projeto foi desenvolvido utilizando **.NET 8**, a versão LTS (Long-Term Suppo
 
 ---
 
+## Testes
+
+O sistema inclui **camada de testes unitários e de integração**:
+
+### Frontend (React + Vitest + Testing Library)
+- Testes escritos em `frontend/src/tests/`  
+- Usam **Vitest** + **Testing Library** para validar os componentes React.  
+- Exemplos implementados:  
+  - Renderização de informações principais do `LeadCard`  
+  - Testes de interação nos botões **Accept** e **Decline**  
+- Execução:
+  ```bash
+  cd frontend
+  npm test
+  ```
+
+---
+
+## Por que .NET 8 em vez de .NET 6?
+
+O projeto foi desenvolvido utilizando **.NET 8**, a versão LTS (Long-Term Support) mais recente da plataforma. Embora o requisito inicial mencionasse .NET 6, o .NET 8 traz melhorias importantes que tornam a aplicação mais estável e preparada para o futuro:
+
+- **Performance**: O .NET 8 traz otimizações significativas no runtime e no Entity Framework Core 8, tornando consultas e operações de banco de dados mais rápidas.  
+- **Suporte Estendido**: Por ser a versão LTS mais atual, o .NET 8 terá suporte oficial até **novembro de 2026**, garantindo mais longevidade e segurança.  
+- **Compatibilidade**: O código escrito para .NET 6 é compatível com .NET 8, então a migração não exige mudanças de arquitetura.  
+- **Recursos Modernos**: APIs simplificadas, suporte a padrões mais atuais de C# e melhorias no hosting model tornam o código mais limpo e sustentável.  
+
+---
+
 ## Dicas de troubleshooting
 
 - **Porta 5080 ocupada**  
