@@ -135,7 +135,7 @@ dotnet watch run --urls http://localhost:5080
 - Swagger: `http://localhost:5080/swagger`
 - A API, ao iniciar, **cria o banco (EnsureCreated)** e **povoa 30 leads novos** (seed) se o banco estiver vazio (veja seção [Seed automático](#seed-automático-e-desconto)).
 
-> Se preferir migrations: `dotnet ef database update` (já existem migrações na pasta *Migrations*).
+> Se preferir migrations: `dotnet ef database update`.
 
 ---
 
@@ -186,9 +186,7 @@ npm run dev
   - `utilities.css`: helpers (ex.: `.text-center`, `.mt-2`).  
   - `tabs.css`, `card.css`, `buttons.css`: camadas por componente/feature.  
   - `main.css`: **agregador** que importa todos os demais.
-- `index.css` importa `styles/main.css` – o React só vê **um** arquivo global.
-
-**Container centralizado**: o wrapper `.container` está com largura fixa centrada, e os cards têm largura máxima para manter a leitura confortável em telas grandes (sem “colar” à esquerda).
+- `index.css` importa `styles/main.css`;
 
 ---
 

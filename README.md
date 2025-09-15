@@ -18,8 +18,11 @@ Aplicação full-stack para gerenciar **leads**, composta por:
 6. [Rodando front e back juntos (opcional)](#rodando-front-e-back-juntos-opcional)  
 7. [Endpoints principais](#endpoints-principais)  
 8. [Seed automático e desconto](#seed-automático-e-desconto)  
-9. [Estilos (CSS) — convenções](#estilos-css--convenções)  
-10. [Dicas de troubleshooting](#dicas-de-troubleshooting)
+9. [Estilos (CSS) — convenções](#estilos-css--convenções) 
+10. [Testes](#testes)  
+11. [Por que .NET 8 em vez de .NET 6?](#por-que-net-8-em-vez-de-net-6)  
+12. [Dicas de troubleshooting](#dicas-de-troubleshooting)
+
 
 ---
 
@@ -132,7 +135,7 @@ dotnet watch run --urls http://localhost:5080
 - Swagger: `http://localhost:5080/swagger`
 - A API, ao iniciar, **cria o banco (EnsureCreated)** e **povoa 30 leads novos** (seed) se o banco estiver vazio (veja seção [Seed automático](#seed-automático-e-desconto)).
 
-> Se preferir migrations: `dotnet ef database update` (já existem migrações na pasta *Migrations*).
+> Se preferir migrations: `dotnet ef database update`.
 
 ---
 
@@ -183,9 +186,36 @@ npm run dev
   - `utilities.css`: helpers (ex.: `.text-center`, `.mt-2`).  
   - `tabs.css`, `card.css`, `buttons.css`: camadas por componente/feature.  
   - `main.css`: **agregador** que importa todos os demais.
-- `index.css` importa `styles/main.css` – o React só vê **um** arquivo global.
+- `index.css` importa `styles/main.css`;
 
-**Container centralizado**: o wrapper `.container` está com largura fixa centrada, e os cards têm largura máxima para manter a leitura confortável em telas grandes (sem “colar” à esquerda).
+---
+
+## Testes
+
+O sistema inclui **camada de testes unitários e de integração**:
+
+### Frontend (React + Vitest + Testing Library)
+- Testes escritos em `frontend/src/tests/`  
+- Usam **Vitest** + **Testing Library** para validar os componentes React.  
+- Exemplos implementados:  
+  - Renderização de informações principais do `LeadCard`  
+  - Testes de interação nos botões **Accept** e **Decline**  
+- Execução:
+  ```bash
+  cd frontend
+  npm test
+  ```
+
+---
+
+## Por que .NET 8 em vez de .NET 6?
+
+O projeto foi desenvolvido utilizando **.NET 8**, a versão LTS (Long-Term Support) mais recente da plataforma. Embora o requisito inicial mencionasse .NET 6, o .NET 8 traz melhorias importantes que tornam a aplicação mais estável e preparada para o futuro:
+
+- **Performance**: O .NET 8 traz otimizações significativas no runtime e no Entity Framework Core 8, tornando consultas e operações de banco de dados mais rápidas.  
+- **Suporte Estendido**: Por ser a versão LTS mais atual, o .NET 8 terá suporte oficial até **novembro de 2026**, garantindo mais longevidade e segurança.  
+- **Compatibilidade**: O código escrito para .NET 6 é compatível com .NET 8, então a migração não exige mudanças de arquitetura.  
+- **Recursos Modernos**: APIs simplificadas, suporte a padrões mais atuais de C# e melhorias no hosting model tornam o código mais limpo e sustentável.  
 
 ---
 

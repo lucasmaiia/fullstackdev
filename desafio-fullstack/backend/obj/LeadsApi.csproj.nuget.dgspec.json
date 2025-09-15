@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Lucas Maia\\Desktop\\fullstackdev\\desafio-fullstack\\backend\\LeadsApi.csproj": {}
+    "C:\\Users\\Lucas Maia\\Documents\\GitHub\\fullstackdev\\desafio-fullstack\\backend\\LeadsApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Lucas Maia\\Desktop\\fullstackdev\\desafio-fullstack\\backend\\LeadsApi.csproj": {
+    "C:\\Users\\Lucas Maia\\Documents\\GitHub\\fullstackdev\\desafio-fullstack\\backend\\LeadsApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Lucas Maia\\Desktop\\fullstackdev\\desafio-fullstack\\backend\\LeadsApi.csproj",
+        "projectUniqueName": "C:\\Users\\Lucas Maia\\Documents\\GitHub\\fullstackdev\\desafio-fullstack\\backend\\LeadsApi.csproj",
         "projectName": "LeadsApi",
-        "projectPath": "C:\\Users\\Lucas Maia\\Desktop\\fullstackdev\\desafio-fullstack\\backend\\LeadsApi.csproj",
+        "projectPath": "C:\\Users\\Lucas Maia\\Documents\\GitHub\\fullstackdev\\desafio-fullstack\\backend\\LeadsApi.csproj",
         "packagesPath": "C:\\Users\\Lucas Maia\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Lucas Maia\\Desktop\\fullstackdev\\desafio-fullstack\\backend\\obj\\",
+        "outputPath": "C:\\Users\\Lucas Maia\\Documents\\GitHub\\fullstackdev\\desafio-fullstack\\backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Lucas Maia\\AppData\\Roaming\\NuGet\\NuGet.Config"
